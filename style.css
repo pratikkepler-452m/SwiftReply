@@ -1,0 +1,192 @@
+/* Base Styling & CSS Variables */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+:root {
+    --primary: #6C63FF;
+    --secondary: #00D4FF;
+    --tertiary: #8B5CF6;
+    --bg-dark: #0B0F19;
+    --bg-darker: #050816;
+    --bg-panel: rgba(17, 24, 39, 0.7);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-glow: rgba(108, 99, 255, 0.3);
+}
+
+body {
+    background-color: var(--bg-darker);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Streamlit Main Container overrides */
+.stApp {
+    background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-darker) 60%);
+    background-attachment: fixed;
+}
+
+/* Hide default streamlit header */
+header { visibility: hidden; }
+
+/* ---------------- HERO SECTION ---------------- */
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 1rem 3rem 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-logo {
+    animation: float 6s ease-in-out infinite;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.5));
+}
+
+.title-glow {
+    font-weight: 800;
+    font-size: 4.5rem;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, var(--text-main) 0%, #a5b4fc 50%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    text-shadow: 0px 0px 30px rgba(108, 99, 255, 0.2);
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 1.4rem;
+    font-weight: 300;
+    max-width: 600px;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+/* ---------------- BUTTONS ---------------- */
+.stButton > button, .hero-btn {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 0.6rem 1.5rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3) !important;
+    text-transform: uppercase;
+    font-size: 0.85rem !important;
+}
+
+.stButton > button:hover, .hero-btn:hover {
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5) !important;
+    background: linear-gradient(90deg, var(--secondary), var(--primary));
+}
+
+/* ---------------- CHAT INTERFACE ---------------- */
+/* Chat Input Container */
+.stChatInputContainer {
+    background: rgba(17, 24, 39, 0.8) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 24px !important;
+    padding: 0.2rem !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05) inset !important;
+    transition: all 0.3s ease !important;
+}
+
+.stChatInputContainer:focus-within {
+    border-color: var(--secondary) !important;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.2), 0 0 0 1px var(--secondary) inset !important;
+}
+
+/* Chat Messages */
+.stChatMessage {
+    background: var(--bg-panel) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 16px !important;
+    padding: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2) !important;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Specific styling for assistant vs user if needed (Streamlit assigns data-testid) */
+[data-testid="chatAvatarIcon-user"] {
+    background-color: var(--tertiary) !important;
+}
+[data-testid="chatAvatarIcon-assistant"] {
+    background-color: var(--bg-dark) !important;
+    border: 2px solid var(--secondary) !important;
+    box-shadow: 0 0 15px var(--secondary) !important;
+}
+
+/* ---------------- SIDEBAR ---------------- */
+[data-testid="stSidebar"] {
+    background: rgba(11, 15, 25, 0.85) !important;
+    backdrop-filter: blur(20px) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.sidebar-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #fff, var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Form Inputs */
+.stTextInput > div > div > input, 
+.stTextArea > div > div > textarea,
+.stSelectbox > div > div > div {
+    background-color: rgba(0,0,0,0.3) !important;
+    color: var(--text-main) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+.stTextInput > div > div > input:focus, 
+.stTextArea > div > div > textarea:focus {
+    border-color: var(--secondary) !important;
+    box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2) !important;
+}
+
+/* ---------------- ANIMATIONS ---------------- */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Floating Orbs in Background */
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.4;
+    animation: float 10s infinite alternate ease-in-out;
+}
+.orb-1 { width: 300px; height: 300px; background: var(--primary); top: -100px; left: -100px; }
+.orb-2 { width: 400px; height: 400px; background: var(--tertiary); bottom: 10%; right: -150px; animation-delay: -5s; }

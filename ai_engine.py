@@ -41,13 +41,16 @@ def create_chat_session(business_info: dict):
          
     system_instruction = get_system_prompt(business_info)
     
-    # We use gemini-1.5-flash-latest which is the most reliable alias for the 1.5 models
-    model = genai.GenerativeModel(
-        model_name="gemini-1.5-flash-latest",
-        system_instruction=system_instruction
-    )
+    # We use gemini-pro which is 100% supported in all regions and API key tiers.
+    # We inject the system prompt directly into the starting history since gemini-pro doesn't natively support the system_instruction parameter.
+    model = genai.GenerativeModel(model_name="gemini-pro")
     
-    return model.start_chat(history=[])
+    initial_history = [
+        {"role": "user", "parts": [system_instruction + "\n\nDo you understand these instructions?"]},
+        {"role": "model", "parts": ["Yes, I perfectly understand. I will act strictly as the Swift Reply AI assistant according to these instructions."]}
+    ]
+    
+    return model.start_chat(history=initial_history)
 
 def generate_response(chat_session, user_message: str) -> str:
     """Generates a response from the chat session."""

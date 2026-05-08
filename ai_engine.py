@@ -5,6 +5,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+_client = None
+
+def get_client():
+    global _client
+    if _client is None:
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key or api_key == "YOUR_GEMINI_API_KEY_HERE":
+            raise ValueError("GEMINI_API_KEY is missing. Please add it to the .env file.")
+        _client = genai.Client(api_key=api_key)
+    return _client
+
 def get_system_prompt(business_info: dict) -> str:
     """Generates the system prompt using the provided business configuration."""
     base_prompt = (
@@ -32,14 +43,9 @@ def get_system_prompt(business_info: dict) -> str:
 
 def create_chat_session(business_info: dict):
     """Initializes and returns a new Gemini chat session."""
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key or api_key == "YOUR_GEMINI_API_KEY_HERE":
-         raise ValueError("GEMINI_API_KEY is missing. Please add it to the .env file.")
-         
-    system_instruction = get_system_prompt(business_info)
+    client = get_client()
     
-    # Modern google-genai client
-    client = genai.Client(api_key=api_key)
+    system_instruction = get_system_prompt(business_info)
     
     config = types.GenerateContentConfig(
         system_instruction=system_instruction,

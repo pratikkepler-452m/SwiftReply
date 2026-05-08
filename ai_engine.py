@@ -41,9 +41,9 @@ def create_chat_session(business_info: dict):
          
     system_instruction = get_system_prompt(business_info)
     
-    # We use gemini-1.5-flash which is widely supported and fast
+    # We use gemini-1.5-flash-latest which is the most reliable alias for the 1.5 models
     model = genai.GenerativeModel(
-        model_name="gemini-1.5-flash",
+        model_name="gemini-1.5-flash-latest",
         system_instruction=system_instruction
     )
     

@@ -1,13 +1,9 @@
 import os
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from dotenv import load_dotenv
 
 load_dotenv()
-
-# Configure Gemini AI
-api_key = os.getenv("GEMINI_API_KEY")
-if api_key and api_key != "YOUR_GEMINI_API_KEY_HERE":
-    genai.configure(api_key=api_key)
 
 def get_system_prompt(business_info: dict) -> str:
     """Generates the system prompt using the provided business configuration."""
@@ -36,21 +32,24 @@ def get_system_prompt(business_info: dict) -> str:
 
 def create_chat_session(business_info: dict):
     """Initializes and returns a new Gemini chat session."""
+    api_key = os.getenv("GEMINI_API_KEY")
     if not api_key or api_key == "YOUR_GEMINI_API_KEY_HERE":
          raise ValueError("GEMINI_API_KEY is missing. Please add it to the .env file.")
          
     system_instruction = get_system_prompt(business_info)
     
-    # We use gemini-pro which is 100% supported in all regions and API key tiers.
-    # We inject the system prompt directly into the starting history since gemini-pro doesn't natively support the system_instruction parameter.
-    model = genai.GenerativeModel(model_name="gemini-pro")
+    # Modern google-genai client
+    client = genai.Client(api_key=api_key)
     
-    initial_history = [
-        {"role": "user", "parts": [system_instruction + "\n\nDo you understand these instructions?"]},
-        {"role": "model", "parts": ["Yes, I perfectly understand. I will act strictly as the Swift Reply AI assistant according to these instructions."]}
-    ]
+    config = types.GenerateContentConfig(
+        system_instruction=system_instruction,
+    )
     
-    return model.start_chat(history=initial_history)
+    # We use gemini-flash-latest to guarantee access to the latest generation models on this key
+    return client.chats.create(
+        model="gemini-flash-latest",
+        config=config
+    )
 
 def generate_response(chat_session, user_message: str) -> str:
     """Generates a response from the chat session."""
